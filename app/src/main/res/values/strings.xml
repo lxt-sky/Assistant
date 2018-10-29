@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Assistant</string>
+    <string name="tvItemLabel">当前连接的设备</string>
+    <string name="tvItemLabel2">历史记录</string>
+    <string name="tvHistoryClear">清空</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="551dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/tvPhoneTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="报警用电话号码"
+            android:textColor="@color/color_text_black"/>
+
+        <EditText
+            android:id="@+id/etPhoneValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvPhoneTitle"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:inputType="phone"
+            android:text="17704623054"
+            android:digits="0123456789."
+            android:textColor="@color/color_text_black"
+            android:background="@drawable/shape_input_radius"
+             />
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

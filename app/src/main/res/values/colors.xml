@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <color name="colorPrimary">#009fff</color>
+    <color name="colorPrimaryDark">#0086d7</color>
+    <color name="colorAccent">#6bc6fd</color>
+
+    <color name="black_text">#000000</color>
+    <color name="btn_yellow">#ff9800</color>
+    <color name="btn_text_white">#ffffff</color>
+    <color name="color_stroke_gray">#bbbbbb</color>
+    <color name="color_text_black">#000000</color>
+    <color name="color_text_white">#ffffff</color>
+    <!--点击效果颜色-->
+    <color name="common_ripple_gray">#5f8b8b8b</color>
+    <color name="indicator_gray">#ececec</color>
+</resources>
