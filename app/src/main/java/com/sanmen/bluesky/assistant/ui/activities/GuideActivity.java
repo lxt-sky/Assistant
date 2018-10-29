@@ -37,7 +37,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_guide);
-
         initLayout();
 
     }
