@@ -1,7 +1,9 @@
 package com.sanmen.bluesky.assistant.ui.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -16,13 +18,14 @@ import com.sanmen.bluesky.assistant.base.BaseActivity;
 import com.sanmen.bluesky.assistant.ui.fragments.BluetoothSearchFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.PermissionApplyFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.PhoneSettingFragment;
+import com.sanmen.bluesky.assistant.utils.SwitchUtil;
 
 /**
  * @author lxt_bluesky
  * @date 2018/10/29
  * @description
  */
-public class GuideActivity extends BaseActivity implements View.OnClickListener {
+public class GuideActivity extends BaseActivity implements View.OnClickListener,ViewPager.OnPageChangeListener,ActivityCompat.OnRequestPermissionsResultCallback {
 
     ImageView ivGuideCancel;
     ViewPager viewPager;
@@ -30,7 +33,10 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     Button btnNextStep;
     MyAdapter adapter;
 
+    private int currentIndex=0;
+
     private String[] pager = {"权限申请","蓝牙配对","号码设置"};
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +59,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
 
         ivGuideCancel.setOnClickListener(this);
         btnNextStep.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(this);
 
         adapter = new MyAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -68,6 +75,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
             llIndicatorLayout.addView(view,layoutParams);
         }
 
+        llIndicatorLayout.getChildAt(0).setEnabled(true);
+
     }
 
     /**
@@ -77,8 +86,71 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
 
+        switch (v.getId()){
+            case R.id.btnNextStep:
+                if (currentIndex<pager.length-1){
+                    currentIndex++;
+                }else {
+                    toHomeActivity();
+                }
+
+                viewPager.setCurrentItem(currentIndex);
+                toSetBtnText();
+                break;
+            case R.id.ivGuideCancel:
+                toHomeActivity();
+                break;
+            default:
+                break;
+        }
+
     }
 
+    /**
+     * 点击完成,前往首页
+     */
+    private void toHomeActivity() {
+        SwitchUtil.switchToMainActivity(this);
+        finish();
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    /**
+     * 页面滑动切换处理
+     * @param position
+     */
+    @Override
+    public void onPageSelected(int position) {
+        currentIndex = position;
+        for(int i=0;i<pager.length;i++){
+            llIndicatorLayout.getChildAt(i).setEnabled(false);
+        }
+        llIndicatorLayout.getChildAt(position).setEnabled(true);
+        toSetBtnText();
+    }
+
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
+    }
+
+
+    private void toSetBtnText() {
+        if (currentIndex==pager.length-1){
+            btnNextStep.setText("完成");
+        }else {
+            btnNextStep.setText("下一步");
+        }
+    }
+
+    /**
+     * 自定义页面适配器
+     */
     private class MyAdapter extends FragmentPagerAdapter{
 
 
