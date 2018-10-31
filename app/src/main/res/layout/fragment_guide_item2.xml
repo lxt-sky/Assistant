@@ -46,8 +46,16 @@
         android:layout_weight="1"
         android:background="@drawable/shape_item_radius"
         android:orientation="vertical"
+        android:padding="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llPairLayout"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/llPairLayout">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvBluetoothList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

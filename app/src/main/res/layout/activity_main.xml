@@ -15,7 +15,7 @@
         app:showNavRight="true"
         app:showNavBack="false"
         app:titleTextColor="@android:color/white"
-        android:background="@drawable/ic_bluetooth">
+        android:background="@drawable/ic_bluetooth_empty">
 
     </com.sanmen.bluesky.assistant.widgets.TitleBar>
 
@@ -37,7 +37,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:paddingLeft="10dp"
-            android:src="@drawable/ic_bluetooth"
+            android:src="@drawable/ic_bluetooth_empty"
             tools:ignore="MissingConstraints" />
 
         <TextView
