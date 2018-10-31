@@ -14,8 +14,7 @@
         android:id="@+id/titleBar"
         app:showNavRight="true"
         app:showNavBack="false"
-        app:titleTextColor="@android:color/white"
-        android:background="@drawable/ic_bluetooth_empty">
+        app:titleTextColor="@android:color/white">
 
     </com.sanmen.bluesky.assistant.widgets.TitleBar>
 

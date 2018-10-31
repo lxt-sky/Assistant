@@ -13,4 +13,6 @@
     <!--点击效果颜色-->
     <color name="common_ripple_gray">#5f8b8b8b</color>
     <color name="indicator_gray">#ececec</color>
+
+    <color name="color_background_gray">#EEEEEE</color>
 </resources>
