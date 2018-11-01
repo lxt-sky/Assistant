@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.sanmen.bluesky.assistant.ui.activities.MainActivity;
+import com.sanmen.bluesky.assistant.ui.activities.SettingActivity;
 
 /**
  * @author lxt_bluesky
@@ -15,5 +16,10 @@ public class SwitchUtil {
     public static void switchToMainActivity(Context activity){
         Intent intent = new Intent(activity,MainActivity.class);
         activity.startActivity(intent);
+    }
+
+    public static void switchToSettingActivity(Context context){
+        Intent intent = new Intent(context,SettingActivity.class);
+        context.startActivity(intent);
     }
 }

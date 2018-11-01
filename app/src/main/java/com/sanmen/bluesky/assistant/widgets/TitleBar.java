@@ -91,7 +91,7 @@ public class TitleBar extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (titleOnClickListener != null) {
-                    titleOnClickListener.onLeftClick();
+                    titleOnClickListener.onLeftClick(v);
                 }
             }
         });
@@ -229,7 +229,7 @@ public class TitleBar extends LinearLayout {
         /**
          * 返回按钮的点击事件
          */
-        void onLeftClick();
+        void onLeftClick(View view);
 
         /**
          * 保存按钮的点击事件

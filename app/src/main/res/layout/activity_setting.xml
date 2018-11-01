@@ -23,6 +23,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/llApplyLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_bg"
@@ -31,27 +32,36 @@
             android:paddingTop="12dp"
             android:paddingRight="16dp"
             android:paddingBottom="12dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:srcCompat="@drawable/ic_bluetooth_2" />
 
             <TextView
                 android:id="@+id/tvBluetoothLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:text="蓝牙配对"
-                android:textColor="#1a1a1a"
-                android:textSize="13sp" />
+                android:textColor="#1a1a1a" />
 
             <TextView
                 android:id="@+id/tvDeviceName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Mi Band 3" />
+                android:text="Mi Band 3"
+                android:textSize="12sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_right" />
         </LinearLayout>
 
@@ -63,6 +73,7 @@
             android:background="@color/color_background_gray" />
 
         <LinearLayout
+            android:id="@+id/llPhoneLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_bg"
@@ -72,26 +83,36 @@
             android:paddingRight="16dp"
             android:paddingBottom="12dp">
 
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/ic_phone" />
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tvPhoneLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="电话号码"
-                android:textColor="#1a1a1a"
-                android:textSize="13sp" />
+                android:textColor="#1a1a1a" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvPhoneValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="0598-2711111" />
+                android:text="0598-2711111"
+                android:textSize="12sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_right" />
         </LinearLayout>
 
@@ -103,6 +124,7 @@
             android:background="@color/color_background_gray" />
 
         <LinearLayout
+            android:id="@+id/llAlarmLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_bg"
@@ -112,26 +134,36 @@
             android:paddingRight="16dp"
             android:paddingBottom="12dp">
 
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/ic_alarm" />
+
+
             <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvAlarmType"
+                android:layout_width="203dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="报警方式"
-                android:textColor="#1a1a1a"
-                android:textSize="13sp" />
+                android:textColor="#1a1a1a" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvAlarmValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="电话+短信" />
+                android:text="电话+短信"
+                android:textSize="12sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_right" />
         </LinearLayout>
 
@@ -143,6 +175,7 @@
             android:background="@color/color_background_gray" />
 
         <LinearLayout
+            android:id="@+id/llLocateLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ripple_bg"
@@ -152,26 +185,35 @@
             android:paddingRight="16dp"
             android:paddingBottom="12dp">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="GPS定位"
-                android:textColor="#1a1a1a"
-                android:textSize="13sp" />
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/ic_locate" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvGpsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="GPS定位"
+                android:textColor="#1a1a1a" />
+
+            <TextView
+                android:id="@+id/tvGpsValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="打开" />
+                android:text="打开"
+                android:textSize="12sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_right" />
         </LinearLayout>
 
@@ -182,9 +224,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="XX助手 V1.0"
-        android:textSize="18sp"
         android:gravity="bottom|center"
-        android:paddingBottom="20dp" />
+        android:paddingBottom="30dp" />
 
 
 </LinearLayout>
