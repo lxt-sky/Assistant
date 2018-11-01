@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
+import com.sanmen.bluesky.assistant.utils.SwitchUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         switch (view.getId()){
             case R.id.llApplyLayout:
                 //前往蓝牙配对页
-
+                SwitchUtil.switchToBluetoothActivity(this);
                 break;
             case R.id.llPhoneLayout:
                 //打开电话设置弹窗

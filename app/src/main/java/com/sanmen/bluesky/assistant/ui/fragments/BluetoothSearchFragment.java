@@ -195,7 +195,7 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
                 String address = bluetoothAdapter.getAddress();
                 String name = bluetoothAdapter.getName();
 
-                getBluetoothList();
+//                getBluetoothList();
 
             }else if (resultCode==Activity.RESULT_CANCELED){
                 Toast.makeText(getContext(), "没有蓝牙权限", Toast.LENGTH_SHORT).show();

@@ -3,6 +3,7 @@ package com.sanmen.bluesky.assistant.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import com.sanmen.bluesky.assistant.ui.activities.BluetoothApplyActivity;
 import com.sanmen.bluesky.assistant.ui.activities.MainActivity;
 import com.sanmen.bluesky.assistant.ui.activities.SettingActivity;
 
@@ -20,6 +21,11 @@ public class SwitchUtil {
 
     public static void switchToSettingActivity(Context context){
         Intent intent = new Intent(context,SettingActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void switchToBluetoothActivity(Context context){
+        Intent intent = new Intent(context,BluetoothApplyActivity.class);
         context.startActivity(intent);
     }
 }
