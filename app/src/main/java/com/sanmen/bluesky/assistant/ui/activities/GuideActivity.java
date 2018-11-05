@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
+import com.sanmen.bluesky.assistant.manager.PaperManager;
 import com.sanmen.bluesky.assistant.ui.fragments.BluetoothSearchFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.BluetoothSettingFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.PermissionApplyFragment;
@@ -111,6 +112,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
      * 点击完成,前往首页
      */
     private void toHomeActivity() {
+        PaperManager manager = PaperManager.getPaperManager();
+        manager.setIsNeedGuide(false);
 
         SwitchUtil.switchToConnectEmptyActivity(this);
         finish();

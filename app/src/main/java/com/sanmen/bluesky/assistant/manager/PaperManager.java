@@ -11,6 +11,8 @@ public class PaperManager {
     private static final String ALARM_TYPE="ALARM_TYPE";
     //报警电话
     private static final String ALARM_PHONE = "ALARM_PHONE";
+    //引导
+    private static final String NEED_GUIDE = "NEED_GUIDE";
 
     private static PaperManager paperManager;
 
@@ -40,13 +42,19 @@ public class PaperManager {
     }
 
     public String getAlarmPhone(){
-        return Paper.book().read(ALARM_PHONE);
+        return Paper.book().read(ALARM_PHONE,"");
     }
 
     public void setAlarmPhone(String val){
         Paper.book().write(ALARM_PHONE,val);
     }
 
+    public boolean isNeedGuide(){
+        return Paper.book().read(NEED_GUIDE,true);
+    }
 
+    public void setIsNeedGuide(boolean val){
+        Paper.book().write(NEED_GUIDE,val);
+    }
 
 }

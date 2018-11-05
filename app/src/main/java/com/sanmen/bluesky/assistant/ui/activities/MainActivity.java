@@ -11,13 +11,19 @@ import android.widget.TextView;
 import com.inuker.bluetooth.library.connect.listener.BleConnectStatusListener;
 import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
 import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
+import com.inuker.bluetooth.library.model.BleGattCharacter;
 import com.inuker.bluetooth.library.model.BleGattProfile;
+import com.inuker.bluetooth.library.model.BleGattService;
 import com.inuker.bluetooth.library.utils.BluetoothLog;
 import com.inuker.bluetooth.library.utils.BluetoothUtils;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
+import com.sanmen.bluesky.assistant.entity.DetailItem;
 import com.sanmen.bluesky.assistant.manager.ClientManager;
 import com.sanmen.bluesky.assistant.utils.SwitchUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 import static com.inuker.bluetooth.library.Constants.STATUS_CONNECTED;
@@ -78,7 +84,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             tvDeviceAddress.setText(address);
         }
 
-        showProgressDialog("加载中");
+
         ClientManager.getClient().registerConnectStatusListener(mDevice.getAddress(), mConnectStatusListener);
         connectDeviceIfNeeded();
     }
@@ -94,6 +100,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     };
 
     private void connectDeviceIfNeeded() {
+        showProgressDialog("加载中");
         if (!mConnected) {
             connectDevice();
         }
@@ -109,18 +116,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ClientManager.getClient().connect(mDevice.getAddress(),options, new BleConnectResponse() {
             @Override
             public void onResponse(int code, BleGattProfile data) {
+                dismissProgressDialog();
                 //如果连接不成功则重试
                 if (code==REQUEST_SUCCESS){
 //                    oldPosition=position;
                     //                    setGattProfile(data);
                     tvReConnect.setVisibility(View.GONE);
+                    setGattProfile(data);
                 }else {
                     //                    connectDeviceIfNeeded();
                     tvReConnect.setVisibility(View.VISIBLE);
                 }
-                dismissProgressDialog();
+
             }
         });
+    }
+
+    private void setGattProfile(BleGattProfile data) {
+        List<DetailItem> items = new ArrayList<DetailItem>();
+
+        List<BleGattService> services = data.getServices();
+
+        for (BleGattService service : services) {
+            items.add(new DetailItem(DetailItem.TYPE_SERVICE, service.getUUID(), null));
+            List<BleGattCharacter> characters = service.getCharacters();
+            for (BleGattCharacter character : characters) {
+                items.add(new DetailItem(DetailItem.TYPE_CHARACTER, character.getUuid(), service.getUUID()));
+            }
+        }
+
     }
 
 
@@ -134,5 +158,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onClick(View v) {
         //重连
         connectDeviceIfNeeded();
+    }
+
+    @Override
+    protected void onDestroy() {
+        ClientManager.getClient().disconnect(mDevice.getAddress());
+        ClientManager.getClient().unregisterConnectStatusListener(mDevice.getAddress(), mConnectStatusListener);
+        super.onDestroy();
     }
 }

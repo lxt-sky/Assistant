@@ -1,6 +1,9 @@
 package com.sanmen.bluesky.assistant.ui.activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
+import com.sanmen.bluesky.assistant.manager.PaperManager;
 import com.sanmen.bluesky.assistant.utils.SwitchUtil;
 
 import java.util.ArrayList;
@@ -60,9 +64,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState, persistentState);
 
         setContentView(R.layout.activity_setting);
+
+        obtainParams();
         initTitleBar();
         ButterKnife.bind(this);
 
+    }
+
+    private void obtainParams() {
+        PaperManager manager = PaperManager.getPaperManager();
+        String phone = manager.getAlarmPhone();
+        int type = manager.getAlarmType();
+        tvPhoneValue.setText(phone);
+        tvAlarmValue.setText(alarmArray[type]);
     }
 
     @OnClick({R.id.llApplyLayout,R.id.llPhoneLayout,R.id.llAlarmLayout,R.id.llLocateLayout})
@@ -80,11 +94,29 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 toShowSelectDialog(alarmArray);
                 break;
             case R.id.llLocateLayout:
-                toShowSelectDialog(gpsArray);
+                checkLocate();
+
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 检查是否获得定位权限，定位服务是否打开
+     */
+    private void checkLocate() {
+        int permissionState;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permissionState=checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionState==PackageManager.PERMISSION_GRANTED){
+
+            }else if (permissionState==PackageManager.PERMISSION_DENIED){
+
+            }
+        }
+        toShowSelectDialog(gpsArray);
+
     }
 
     private void toShowSelectDialog(String[] itemArray) {
@@ -196,5 +228,14 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //保存数据，报警方式和报警电话
+        PaperManager manager = PaperManager.getPaperManager();
+        manager.setAlarmPhone(tvAlarmValue.getText().toString());
+        manager.setAlarmType(Integer.valueOf(tvAlarmValue.getText().toString()));
     }
 }
