@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.sanmen.bluesky.assistant.ui.activities.BluetoothApplyActivity;
+import com.sanmen.bluesky.assistant.ui.activities.BluetoothConnectActivity;
+import com.sanmen.bluesky.assistant.ui.activities.ConnectEmptyActivity;
 import com.sanmen.bluesky.assistant.ui.activities.MainActivity;
 import com.sanmen.bluesky.assistant.ui.activities.SettingActivity;
 
@@ -14,8 +16,9 @@ import com.sanmen.bluesky.assistant.ui.activities.SettingActivity;
  */
 public class SwitchUtil {
 
-    public static void switchToMainActivity(Context activity){
+    public static void switchToMainActivity(Context activity,String mac){
         Intent intent = new Intent(activity,MainActivity.class);
+        intent.putExtra("MAC_ADDRESS",mac);
         activity.startActivity(intent);
     }
 
@@ -26,6 +29,16 @@ public class SwitchUtil {
 
     public static void switchToBluetoothActivity(Context context){
         Intent intent = new Intent(context,BluetoothApplyActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void switchToConnectEmptyActivity(Context context){
+        Intent intent = new Intent(context,ConnectEmptyActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void switchToBluetoothConnectActivity(Context context){
+        Intent intent = new Intent(context,BluetoothConnectActivity.class);
         context.startActivity(intent);
     }
 }

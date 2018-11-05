@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
 import com.sanmen.bluesky.assistant.ui.fragments.BluetoothSearchFragment;
+import com.sanmen.bluesky.assistant.ui.fragments.BluetoothSettingFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.PermissionApplyFragment;
 import com.sanmen.bluesky.assistant.ui.fragments.PhoneSettingFragment;
 import com.sanmen.bluesky.assistant.utils.SwitchUtil;
@@ -35,7 +36,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
 
     private int currentIndex=0;
 
-    private String[] pager = {"权限申请","蓝牙配对","号码设置"};
+    private String[] pager = {"权限申请","号码设置"};
 
 
     @Override
@@ -110,7 +111,8 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
      * 点击完成,前往首页
      */
     private void toHomeActivity() {
-        SwitchUtil.switchToMainActivity(this);
+
+        SwitchUtil.switchToConnectEmptyActivity(this);
         finish();
     }
 
@@ -164,8 +166,6 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
                 case 0:
                     return new PermissionApplyFragment();
                 case 1:
-                    return new BluetoothSearchFragment();
-                case 2:
                     return new PhoneSettingFragment();
                 default:
                     break;

@@ -21,6 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name=".MyApplication"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.activities.MainActivity"
             android:persistableMode="persistAcrossReboots">
@@ -37,6 +38,12 @@
             android:persistableMode="persistAcrossReboots"/>
 
         <activity android:name=".ui.activities.BluetoothApplyActivity"
+            android:persistableMode="persistAcrossReboots"/>
+
+        <activity android:name=".ui.activities.ConnectEmptyActivity"
+            android:persistableMode="persistAcrossReboots"/>
+
+        <activity android:name=".ui.activities.BluetoothConnectActivity"
             android:persistableMode="persistAcrossReboots"/>
     </application>
 

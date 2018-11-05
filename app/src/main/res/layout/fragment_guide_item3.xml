@@ -1,43 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constrainLayout">
+    android:padding="10dp"
+    android:id="@+id/relativeLayout">
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="551dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="8dp">
+    <TextView
+        android:id="@+id/tvPhoneTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="60dp"
+        android:text="报警用电话号码"
+        android:textColor="@color/color_text_black" />
 
-        <TextView
-            android:id="@+id/tvPhoneTitle"
+    <EditText
+        android:id="@+id/etPhoneValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPhoneTitle"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_input_radius"
+        android:digits="0123456789."
+        android:hint="请输入电话号码"
+        android:inputType="phone"
+        android:padding="10dp"
+        android:text="17704623054"
+        android:textColor="@color/color_text_black" />
+
+    <RadioGroup
+        android:id="@+id/groupAlarmType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTypeLabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_input_radius"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/rbItem1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="报警用电话号码"
-            android:textColor="@color/color_text_black"/>
+            android:layout_weight="1"
+            android:text="电话" />
 
-        <EditText
-            android:id="@+id/etPhoneValue"
+        <RadioButton
+            android:id="@+id/rbItem2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvPhoneTitle"
-            android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:inputType="phone"
-            android:text="17704623054"
-            android:digits="0123456789."
-            android:hint="请输入电话号码"
-            android:textColor="@color/color_text_black"
-            android:background="@drawable/shape_input_radius"
-             />
-    </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+            android:layout_weight="1"
+            android:text="短信" />
+
+        <RadioButton
+            android:id="@+id/rbItem3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="电话+短信" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="146dp"
+        android:text="报警方式"
+        android:textColor="@color/color_text_black" />
+</RelativeLayout>

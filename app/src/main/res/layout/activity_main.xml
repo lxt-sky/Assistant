@@ -60,7 +60,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/shape_btn_radius"
-        android:text="配对蓝牙"
+        android:text="蓝牙连接"
         android:textColor="@color/btn_text_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

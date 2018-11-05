@@ -25,20 +25,36 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.inuker.bluetooth.library.BluetoothClient;
+import com.inuker.bluetooth.library.Constants;
+import com.inuker.bluetooth.library.connect.listener.BluetoothStateListener;
+import com.inuker.bluetooth.library.connect.options.BleConnectOptions;
+import com.inuker.bluetooth.library.connect.response.BleConnectResponse;
+import com.inuker.bluetooth.library.model.BleGattProfile;
+import com.inuker.bluetooth.library.receiver.listener.BluetoothBondListener;
+import com.inuker.bluetooth.library.search.SearchRequest;
+import com.inuker.bluetooth.library.search.SearchResult;
+import com.inuker.bluetooth.library.search.response.SearchResponse;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseFragment;
 import com.sanmen.bluesky.assistant.entity.BluetoothDeviceBean;
+import com.sanmen.bluesky.assistant.manager.ClientManager;
 import com.sanmen.bluesky.assistant.ui.adapter.BluetoothDeviceAdapter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 
 /**
  * @author lxt_bluesky
  * @date 2018/10/29
  * @description
  */
-public class BluetoothSearchFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener,BluetoothDeviceAdapter.OnItemClickListener {
+public class BluetoothSearchFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener,BluetoothDeviceAdapter.OnItemChildClickListener {
 
     View rootView;
     Switch switchBluetooth;
@@ -52,9 +68,13 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
 
     private Activity activity;
 
+    private BluetoothClient mClient;
+
     List<BluetoothDeviceBean> deviceBeanList = new ArrayList<>();
 
     List<String> addressList =  new ArrayList<>();
+
+    List<BluetoothDevice> deviceList = new ArrayList<>();
 
     private boolean isBluetoothOpen=false;
 
@@ -75,8 +95,8 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+//        mClient = ClientManager.getClient();
         initLayout();
-//        toSearchBluetooth();
         initData();
     }
 
@@ -90,15 +110,10 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
         deviceAdapter = new BluetoothDeviceAdapter(new ArrayList<BluetoothDeviceBean>());
         rvBluetoothList.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvBluetoothList.setAdapter(deviceAdapter);
-        deviceAdapter.setOnItemClickListener(this);
+        deviceAdapter.setOnItemChildClickListener(this);
 
-        //获取蓝牙适配器实例
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        //注册蓝牙搜索和接收广播
-//        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-//        activity.getApplicationContext().registerReceiver(mReceiver,filter);
-//        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-//        activity.getApplicationContext().registerReceiver(mReceiver,filter1);
+        mClient= new BluetoothClient(getActivity());
+        mClient.registerBluetoothStateListener(mBluetoothStateListener);
 
         switchBluetooth.setOnCheckedChangeListener(this);
     }
@@ -107,26 +122,20 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
      * 数据初始化
      */
     private void initData() {
-        if (bluetoothAdapter.isEnabled()){
+
+        if (mClient.isBluetoothOpened()){
             switchBluetooth.setChecked(true);
         }
-
     }
 
     /**
      * 打开并搜索蓝牙
      */
     private void toSearchBluetooth() {
-        //询问打开蓝牙
-        if (bluetoothAdapter!=null){
-            if (!bluetoothAdapter.isEnabled()){
-                Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(bluetoothIntent,REQUEST_CODE);
-
-            }else {
-                //去搜索蓝牙设备列表
-                getBluetoothList();
-            }
+        if (!mClient.isBluetoothOpened()){
+            mClient.openBluetooth();
+        }else {
+            getBluetoothList();
         }
     }
 
@@ -135,16 +144,17 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
      */
     private void getBluetoothList() {
         //清空列表
-        deviceBeanList.clear();
+        deviceList.clear();
         addressList.clear();
 //        showProgressDialog("加载中");
-        //开始搜索蓝牙设备
-//        BluetoothLeScanner scanner = bluetoothAdapter.getBluetoothLeScanner();
-//        scanner.startScan(scanCallback);
-        //第二种扫描方法
-        bluetoothAdapter.startLeScan(leScanCallback);
 
-//        bluetoothAdapter.startDiscovery();
+        SearchRequest request = new SearchRequest.Builder()
+                .searchBluetoothLeDevice(3000,3)
+                .searchBluetoothClassicDevice(5000)
+                .searchBluetoothLeDevice(2000)
+                .build();
+
+        mClient.search(request,searchResponse);
     }
 
     /**
@@ -152,15 +162,14 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
      */
     private void toCloseBluetooth() {
         //清空设备列表
-        deviceBeanList.clear();
+        deviceList.clear();
         addressList.clear();
+        //停止扫描
+        mClient.stopSearch();
+        mClient.closeBluetooth();
 
-        rvBluetoothList.removeAllViews();
-        bluetoothAdapter.stopLeScan(leScanCallback);
         deviceAdapter.setNewData(new ArrayList<BluetoothDeviceBean>());
-//        BluetoothLeScanner scanner = bluetoothAdapter.getBluetoothLeScanner();
-//        scanner.stopScan(scanCallback);
-//        bluetoothAdapter.cancelDiscovery();
+        deviceAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -178,141 +187,58 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
         }
     }
 
-    /**
-     * 申请打开蓝牙请求回调
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE==requestCode){
-            if (resultCode==Activity.RESULT_OK){
+    private SearchResponse searchResponse = new SearchResponse() {
+        @Override
+        public void onSearchStarted() {
+            deviceList.clear();
+            addressList.clear();
+        }
+
+        @Override
+        public void onDeviceFounded(SearchResult device) {
+            BluetoothDevice bluetoothDevice = device.device;
+
+            if (addressList.indexOf(device.getAddress())==-1){
+
+//                deviceAdapter.addData();
+                deviceAdapter.notifyDataSetChanged();
+
+                addressList.add(device.getAddress());
+                deviceList.add(bluetoothDevice);
+            }
+        }
+
+        @Override
+        public void onSearchStopped() {
+
+        }
+
+        @Override
+        public void onSearchCanceled() {
+
+        }
+    };
+
+    private final BluetoothStateListener mBluetoothStateListener = new BluetoothStateListener() {
+        @Override
+        public void onBluetoothStateChanged(boolean openOrClosed) {
+
+            if (openOrClosed){
                 Toast.makeText(getContext(), "蓝牙已经开启", Toast.LENGTH_SHORT).show();
-                this.isBluetoothOpen = true;
-                //提出设备信息
-                String address = bluetoothAdapter.getAddress();
-                String name = bluetoothAdapter.getName();
+                isBluetoothOpen = true;
 
-//                getBluetoothList();
+                getBluetoothList();
+            }else {
+                Toast.makeText(getContext(), "蓝牙已经关闭", Toast.LENGTH_SHORT).show();
+                isBluetoothOpen = false;
 
-            }else if (resultCode==Activity.RESULT_CANCELED){
-                Toast.makeText(getContext(), "没有蓝牙权限", Toast.LENGTH_SHORT).show();
-                this.isBluetoothOpen = false;
             }
+
+            switchBluetooth.setChecked(isBluetoothOpen);
         }
 
-        switchBluetooth.setChecked(isBluetoothOpen);
-    }
-
-    private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            if (addressList.indexOf(device.getAddress())==-1){
-                //已经配对
-                BluetoothDeviceBean bean = new BluetoothDeviceBean();
-                bean.setDeviceName(device.getName());
-                bean.setMacAddress(device.getAddress());
-
-                if (device.getBondState()==BluetoothDevice.BOND_BONDED){
-                    Log.e(".Device",device.getName()+device.getAddress());
-                    bean.setState(true);
-                }else{
-                    //未配对
-                    bean.setState(false);
-
-                }
-                deviceAdapter.addData(bean);
-                deviceAdapter.notifyDataSetChanged();
-
-                addressList.add(device.getAddress());
-                deviceBeanList.add(bean);
-            }
-        }
     };
 
-    private ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-            BluetoothDevice device = result.getDevice();
-
-            if (addressList.indexOf(device.getAddress())==-1){
-                //已经配对
-                BluetoothDeviceBean bean = new BluetoothDeviceBean();
-                bean.setDeviceName(device.getName());
-                bean.setMacAddress(device.getAddress());
-
-                if (device.getBondState()==BluetoothDevice.BOND_BONDED){
-                    Log.e(".Device",device.getName()+device.getAddress());
-                    bean.setState(true);
-                }else{
-                    //未配对
-                    bean.setState(false);
-
-                }
-                deviceAdapter.addData(bean);
-                deviceAdapter.notifyDataSetChanged();
-
-                addressList.add(device.getAddress());
-                deviceBeanList.add(bean);
-            }
-
-        }
-
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            super.onBatchScanResults(results);
-
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-            Toast.makeText(getContext(),"蓝牙搜索失败",Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    /**
-     * 定义广播接收实例
-     */
-//    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String action = intent.getAction();
-//
-//            if (action.equals(BluetoothDevice.ACTION_FOUND)){
-//
-//                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                if (addressList.indexOf(device.getAddress())==-1){
-//                    //已经配对
-//                    BluetoothDeviceBean bean = new BluetoothDeviceBean();
-//                    bean.setDeviceName(device.getName());
-//                    bean.setMacAddress(device.getAddress());
-//
-//                    if (device.getBondState()==BluetoothDevice.BOND_BONDED){
-//                        Log.e(".Device",device.getName()+device.getAddress());
-//                        bean.setState(true);
-//                    }else{
-//                        //未配对
-//                        bean.setState(false);
-//
-//                    }
-//                    addressList.add(device.getAddress());
-//                    deviceBeanList.add(bean);
-//                }
-//
-//            }else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)){
-//                Toast.makeText(getContext(),"搜索完成",Toast.LENGTH_SHORT).show();
-//                //展示列表
-//                if (deviceBeanList.size()!=0){
-//                    deviceAdapter.setNewData(deviceBeanList);
-//                }
-//                dismissProgressDialog();
-//            }
-//        }
-//    };
 
     @Override
     public void onDestroy() {
@@ -328,7 +254,48 @@ public class BluetoothSearchFragment extends BaseFragment implements CompoundBut
      * @param position
      */
     @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        if (deviceList!=null){
+            BluetoothDevice device = deviceList.get(position);
+            connectService(device);
+        }
+    }
+
+    private void connectService(BluetoothDevice device) {
+//        if (device.getBondState()==Constants.BOND_NONE){
+//            try {
+//                Method createMethod = BluetoothDevice.class.getMethod("createBond");
+//                createMethod.invoke(device);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        BleConnectOptions options = new BleConnectOptions.Builder()
+                .setConnectRetry(3)
+                .setConnectTimeout(30000)
+                .setServiceDiscoverRetry(3)
+                .setServiceDiscoverTimeout(20000)
+                .build();
+        mClient.connect(device.getAddress(),options, new BleConnectResponse() {
+            @Override
+            public void onResponse(int code, BleGattProfile data) {
+                //如果连接不成功则重试
+                if (code==REQUEST_SUCCESS){
+                    setGattProfile(data);
+                }else {
+                    connectDeviceIfNeeded();
+                }
+            }
+        });
+    }
+
+    private void connectDeviceIfNeeded() {
 
     }
+
+    private void setGattProfile(BleGattProfile data) {
+        Log.e("获取属性",data.toString());
+    }
+
 }

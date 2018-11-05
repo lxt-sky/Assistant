@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.kaopiz.kprogresshud.KProgressHUD;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.widgets.TitleBar;
 
@@ -68,5 +69,32 @@ public class BaseActivity extends AppCompatActivity implements TitleBar.TitleOnC
      */
     public void setRightText(String rightText){
         titleBar.setRightText(rightText);
+    }
+
+    private KProgressHUD progressHUD = null;
+
+    protected void showProgressDialog(@StringRes int res) {
+        showProgressDialog(getString(res));
+    }
+
+    protected void showProgressDialog(String label) {
+        if (progressHUD == null) {
+            progressHUD = KProgressHUD.create(this)
+                    .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                    .setLabel(label)
+                    .setCancellable(true)
+                    .setAnimationSpeed(2)
+                    .setDimAmount(0.5f)
+                    .show();
+        } else {
+            progressHUD.setLabel(label);
+            progressHUD.show();
+        }
+    }
+
+    protected void dismissProgressDialog() {
+        if (progressHUD != null) {
+            progressHUD.dismiss();
+        }
     }
 }

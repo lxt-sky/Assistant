@@ -37,4 +37,8 @@ dependencies {
     //butterknife
     implementation 'com.jakewharton:butterknife:9.0.0-rc1'
     annotationProcessor  'com.jakewharton:butterknife-compiler:9.0.0-rc1'
+
+    implementation 'com.inuker.bluetooth:library:1.4.0'
+    implementation 'io.paperdb:paperdb:2.6'
+
 }

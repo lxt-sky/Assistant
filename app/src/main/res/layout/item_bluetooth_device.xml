@@ -25,4 +25,12 @@
         android:text="设备名"
         android:textColor="@color/color_text_black"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvConnectState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dp"
+        android:text="已连接" />
 </LinearLayout>

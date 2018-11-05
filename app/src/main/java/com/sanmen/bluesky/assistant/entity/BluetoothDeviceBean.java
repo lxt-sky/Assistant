@@ -1,5 +1,6 @@
 package com.sanmen.bluesky.assistant.entity;
 
+import android.bluetooth.BluetoothDevice;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,24 +10,15 @@ import android.os.Parcelable;
  * @description
  */
 public class BluetoothDeviceBean implements Parcelable {
-    private String deviceName;
-    private String macAddress;
+    private BluetoothDevice device;
     private boolean state;
 
-    public String getDeviceName() {
-        return deviceName;
+    public BluetoothDevice getDevice() {
+        return device;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
-
-    public String getMacAddress() {
-        return macAddress;
-    }
-
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setDevice(BluetoothDevice device) {
+        this.device = device;
     }
 
     public boolean isState() {
@@ -44,8 +36,7 @@ public class BluetoothDeviceBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.deviceName);
-        dest.writeString(this.macAddress);
+        dest.writeParcelable(this.device, flags);
         dest.writeByte(this.state ? (byte) 1 : (byte) 0);
     }
 
@@ -53,8 +44,7 @@ public class BluetoothDeviceBean implements Parcelable {
     }
 
     protected BluetoothDeviceBean(Parcel in) {
-        this.deviceName = in.readString();
-        this.macAddress = in.readString();
+        this.device = in.readParcelable(BluetoothDevice.class.getClassLoader());
         this.state = in.readByte() != 0;
     }
 

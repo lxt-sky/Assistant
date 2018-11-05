@@ -6,8 +6,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
@@ -34,7 +36,7 @@ import java.util.List;
  * @date 2018/11/1
  * @description
  */
-public class BluetoothApplyActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener,BluetoothDeviceAdapter.OnItemClickListener {
+public class BluetoothApplyActivity extends BaseActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, BaseQuickAdapter.OnItemChildClickListener {
 
     Switch switchBluetooth;
 
@@ -44,11 +46,17 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
 
     BluetoothAdapter bluetoothAdapter;
 
+    BluetoothGatt mBluetoothGatt;
+
     BluetoothDeviceAdapter deviceAdapter;
 
-    private boolean isBluetoothOpen=false;
-
     private static final int REQUEST_CODE=2;
+
+    private static final int STATE_DISCONNECTED = 0;
+
+    private static final int STATE_CONNECTING = 1;
+
+    private static final int STATE_CONNECTED = 2;
 
     List<BluetoothDeviceBean> deviceBeanList = new ArrayList<>();
 
@@ -56,6 +64,11 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
 
     List<String> addressList =  new ArrayList<>();
 
+    private boolean isBluetoothOpen=false;
+
+    private int mConnectionState = STATE_DISCONNECTED;
+
+    private boolean mScanning =false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -82,6 +95,7 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
         rvDeviceList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvDeviceList.setAdapter(deviceAdapter);
 
+        deviceAdapter.setOnItemChildClickListener(this);
         btnSave.setOnClickListener(this);
         switchBluetooth.setOnCheckedChangeListener(this);
 
@@ -115,6 +129,8 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
                 //去搜索蓝牙设备列表
                 getBluetoothList();
             }
+        }else {
+            Toast.makeText(this,"当前设备不支持蓝牙!",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -126,10 +142,12 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
         //清空设备列表
         deviceBeanList.clear();
         addressList.clear();
-
-        bluetoothAdapter.stopLeScan(leScanCallback);
+        //停止扫描设备
+        scanLeService(false);
+        //关闭蓝牙服务
         bluetoothAdapter.disable();
         deviceAdapter.setNewData(new ArrayList<BluetoothDeviceBean>());
+        deviceAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -139,7 +157,7 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
         deviceBeanList.clear();
         addressList.clear();
 
-        bluetoothAdapter.startLeScan(leScanCallback);
+        scanLeService(true);
     }
 
     @Override
@@ -160,49 +178,102 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
         switchBluetooth.setChecked(isBluetoothOpen);
     }
 
+    /**
+     * 扫描设备
+     * @param enable
+     */
+    private void scanLeService(boolean enable){
+        if (enable){
+            Handler mHandler = new Handler();
+            //8秒后停止扫描
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning=false;
+                    bluetoothAdapter.stopLeScan(leScanCallback);
+                }
+            },8000);
+
+            mScanning=true;
+            bluetoothAdapter.startLeScan(leScanCallback);
+        }else {
+            mScanning=false;
+            bluetoothAdapter.stopLeScan(leScanCallback);
+        }
+    }
+
     private BluetoothAdapter.LeScanCallback leScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
-        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            if (addressList.indexOf(device.getAddress())==-1){
-                BluetoothDeviceBean bean = new BluetoothDeviceBean();
-                bean.setDeviceName(device.getName());
-                bean.setMacAddress(device.getAddress());
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+            //更新UI
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (addressList.indexOf(device.getAddress())==-1){
+//                        BluetoothDeviceBean bean = new BluetoothDeviceBean();
+//                        bean.setDeviceName(device.getName());
+//                        bean.setMacAddress(device.getAddress());
+//
+//                        if (device.getBondState()==BluetoothDevice.BOND_BONDED){
+//                            Log.e(".Device",device.getName()+device.getAddress());
+//                            bean.setState(true);
+//                        }else{
+//                            //未配对
+//                            bean.setState(false);
+//
+//                        }
+//                        deviceAdapter.addData(device);
+                        deviceAdapter.notifyDataSetChanged();
+                        //将搜索到的设备添加至列表
+                        addressList.add(device.getAddress());
+//                        deviceBeanList.add(bean);
 
-                if (device.getBondState()==BluetoothDevice.BOND_BONDED){
-                    Log.e(".Device",device.getName()+device.getAddress());
-                    bean.setState(true);
-                }else{
-                    //未配对
-                    bean.setState(false);
-
+                        deviceList.add(device);
+                    }
                 }
-                deviceAdapter.addData(bean);
-                deviceAdapter.notifyDataSetChanged();
-                //将搜索到的设备添加至列表
-                addressList.add(device.getAddress());
-                deviceBeanList.add(bean);
+            });
 
-                deviceList.add(device);
-            }
         }
     };
 
+    /**
+     * 设备列表点击事件处理
+     * @param adapter
+     * @param view
+     * @param position
+     */
     @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         BluetoothDevice device = deviceList.get(position);
-        device.connectGatt(this,false,gattCallback);
+        //连接设备
+        mBluetoothGatt = device.connectGatt(this,false,gattCallback);
+
+        bluetoothAdapter.stopLeScan(leScanCallback);
     }
 
     private BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
+        //连接状态改变回调
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
-        }
+            if (newState==BluetoothProfile.STATE_CONNECTED){
+                //蓝牙设备已连接,连接成功后启动服务发现
+                Log.e(".ApplyActivity", "启动服务发现:" + mBluetoothGatt.discoverServices());
+            }else if (newState==BluetoothProfile.STATE_DISCONNECTED){
+                //蓝牙设备未连接
+                mBluetoothGatt.connect();
 
+            }
+        }
+        //发现服务回调
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
+            if (status==BluetoothGatt.GATT_SUCCESS){
+                Log.e(".ApplyActivity", "成功发现服务");
+            }else{
+                Log.e(".ApplyActivity", "服务发现失败，错误码为:" + status);
+            }
         }
 
         @Override
@@ -220,4 +291,5 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
             super.onCharacteristicChanged(gatt, characteristic);
         }
     };
+
 }
