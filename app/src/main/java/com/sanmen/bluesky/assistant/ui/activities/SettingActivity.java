@@ -59,15 +59,16 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
      */
     int showType = 0;
 
+    private int alarmType;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
         setContentView(R.layout.activity_setting);
-
-        obtainParams();
         initTitleBar();
         ButterKnife.bind(this);
+        obtainParams();
 
     }
 
@@ -235,7 +236,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         super.onStop();
         //保存数据，报警方式和报警电话
         PaperManager manager = PaperManager.getPaperManager();
-        manager.setAlarmPhone(tvAlarmValue.getText().toString());
-        manager.setAlarmType(Integer.valueOf(tvAlarmValue.getText().toString()));
+        manager.setAlarmPhone(tvPhoneValue.getText().toString());
+        String alarmValue = tvAlarmValue.getText().toString();
+        for (int i=0;i<alarmArray.length;i++){
+            if (alarmValue.equals(alarmArray[i])){
+                alarmType=i;
+                break;
+            }
+        }
+
+        manager.setAlarmType(alarmType);
     }
 }

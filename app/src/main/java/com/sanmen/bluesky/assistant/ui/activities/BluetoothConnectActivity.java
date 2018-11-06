@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -41,9 +43,12 @@ public class BluetoothConnectActivity extends BaseActivity implements BaseQuickA
 
     Switch switchBluetooth;
     RecyclerView rvDeviceList;
+    TextView tvClear;
+
     private BluetoothDeviceAdapter deviceAdapter;
     private boolean isBluetoothOpen;
     private boolean mConnected;
+    private long exitTime=0;
 
     List<String> addressList =  new ArrayList<>();
 
@@ -187,4 +192,18 @@ public class BluetoothConnectActivity extends BaseActivity implements BaseQuickA
 
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            if ((System.currentTimeMillis()-exitTime)>2000){
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime=System.currentTimeMillis();
+            }else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

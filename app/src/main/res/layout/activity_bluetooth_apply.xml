@@ -13,7 +13,7 @@
         app:title_background="@color/colorPrimaryDark"
         app:titleText="蓝牙连接"
         android:id="@+id/titleBar"
-        app:showNavBack="true"
+        app:showNavBack="false"
         app:titleTextColor="@android:color/white">
 
     </com.sanmen.bluesky.assistant.widgets.TitleBar>
@@ -53,6 +53,7 @@
         android:background="@drawable/shape_btn_radius_2"
         android:text="完成"
         android:textColor="@color/btn_text_white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -62,7 +63,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="40dp"
         android:background="@android:color/white"
         android:elevation="4dp"
         android:orientation="horizontal"

@@ -3,6 +3,11 @@ package com.sanmen.bluesky.assistant.manager;
 import android.content.Context;
 
 
+import com.sanmen.bluesky.assistant.entity.LocationDataBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import io.paperdb.Paper;
 
 public class PaperManager {
@@ -13,6 +18,8 @@ public class PaperManager {
     private static final String ALARM_PHONE = "ALARM_PHONE";
     //引导
     private static final String NEED_GUIDE = "NEED_GUIDE";
+
+    private static final String HISTORY_LIST = "HISTORY_LIST";
 
     private static PaperManager paperManager;
 
@@ -55,6 +62,14 @@ public class PaperManager {
 
     public void setIsNeedGuide(boolean val){
         Paper.book().write(NEED_GUIDE,val);
+    }
+
+    public List<LocationDataBean> getHistoryList(){
+        return Paper.book().read(HISTORY_LIST,new ArrayList<LocationDataBean>());
+    }
+
+    public void setHistoryList(List<LocationDataBean> list){
+        Paper.book().write(HISTORY_LIST,list);
     }
 
 }

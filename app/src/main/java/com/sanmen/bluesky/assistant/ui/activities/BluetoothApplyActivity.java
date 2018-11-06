@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -30,6 +32,7 @@ import com.sanmen.bluesky.assistant.ui.adapter.BluetoothDeviceAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author lxt_bluesky
@@ -69,6 +72,10 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
     private int mConnectionState = STATE_DISCONNECTED;
 
     private boolean mScanning =false;
+
+    private final static String MY_UUID = "00001101-0000-1000-8000-00805F9B34FB";
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -259,6 +266,8 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
             if (newState==BluetoothProfile.STATE_CONNECTED){
                 //蓝牙设备已连接,连接成功后启动服务发现
                 Log.e(".ApplyActivity", "启动服务发现:" + mBluetoothGatt.discoverServices());
+
+
             }else if (newState==BluetoothProfile.STATE_DISCONNECTED){
                 //蓝牙设备未连接
                 mBluetoothGatt.connect();
@@ -271,6 +280,8 @@ public class BluetoothApplyActivity extends BaseActivity implements View.OnClick
             super.onServicesDiscovered(gatt, status);
             if (status==BluetoothGatt.GATT_SUCCESS){
                 Log.e(".ApplyActivity", "成功发现服务");
+                BluetoothGattService service = gatt.getService(UUID.fromString(MY_UUID));
+                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
             }else{
                 Log.e(".ApplyActivity", "服务发现失败，错误码为:" + status);
             }

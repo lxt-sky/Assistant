@@ -46,5 +46,6 @@ public class ConnectEmptyActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
 
         SwitchUtil.switchToBluetoothConnectActivity(this);
+        finish();
     }
 }

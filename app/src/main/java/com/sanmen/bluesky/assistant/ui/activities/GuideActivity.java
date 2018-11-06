@@ -45,8 +45,18 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_guide);
+
+        checkIsNeedGuide();
         initLayout();
 
+    }
+
+    private void checkIsNeedGuide() {
+        boolean isNeedGuide = PaperManager.getPaperManager().isNeedGuide();
+        if (!isNeedGuide){
+            SwitchUtil.switchToConnectEmptyActivity(this);
+            finish();
+        }
     }
 
     /**
