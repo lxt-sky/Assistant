@@ -3,4 +3,6 @@
     <string name="tvItemLabel">当前连接的设备</string>
     <string name="tvItemLabel2">历史记录</string>
     <string name="tvHistoryClear">清空</string>
+    <string name="connected">连接成功</string>
+    <string name="disconnected">连接失败</string>
 </resources>

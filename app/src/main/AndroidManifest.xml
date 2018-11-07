@@ -45,6 +45,11 @@
 
         <activity android:name=".ui.activities.BluetoothConnectActivity"
             android:persistableMode="persistAcrossReboots"/>
+
+        <activity android:name=".ui.activities.DeviceActivity"
+            android:persistableMode="persistAcrossReboots"/>
+
+        <service android:name=".service.BluetoothLeService"/>
     </application>
 
 </manifest>

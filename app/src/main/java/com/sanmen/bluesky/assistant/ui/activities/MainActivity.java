@@ -180,8 +180,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
 
-//        ClientManager.getClient().registerConnectStatusListener(mDevice.getAddress(), mConnectStatusListener);
-//        connectDeviceIfNeeded();
+        ClientManager.getClient().registerConnectStatusListener(mDevice.getAddress(), mConnectStatusListener);
+        connectDeviceIfNeeded();
 
 //        serviceConnect();
 
@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             mConnected = (status == STATUS_CONNECTED);
             tvDeviceState.setText(mConnected?"已连接":"连接失败");
-//            connectDeviceIfNeeded();
+            connectDeviceIfNeeded();
 
         }
     };
@@ -236,13 +236,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 //如果连接不成功则重试
                 if (code==REQUEST_SUCCESS){
                     tvReConnect.setVisibility(View.GONE);
-                    Toast.makeText(MainActivity.this,"Code:"+code,Toast.LENGTH_SHORT).show();
+
                     setGattProfile(data);
                     readData();
                 }else {
                     //connectDeviceIfNeeded();
                     tvReConnect.setVisibility(View.VISIBLE);
                 }
+                Toast.makeText(MainActivity.this,"Code:"+code,Toast.LENGTH_SHORT).show();
 
             }
         });
