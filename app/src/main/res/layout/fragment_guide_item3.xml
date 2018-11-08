@@ -28,7 +28,6 @@
         android:hint="请输入电话号码"
         android:inputType="phone"
         android:padding="10dp"
-        android:text="17704623054"
         android:textColor="@color/color_text_black" />
 
     <RadioGroup

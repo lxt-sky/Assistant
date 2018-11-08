@@ -165,13 +165,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:padding="10dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/shape_item_radius"
-        android:elevation="2dp">
+        android:elevation="2dp"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tvItemLabel2"
@@ -181,23 +182,24 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/tvItemLabel2" />
+
         <TextView
             android:id="@+id/tvHistoryClear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:text="@string/tvHistoryClear" />
 
         <View
             android:id="@+id/viewLine2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/color_stroke_gray"
             android:layout_below="@id/tvItemLabel2"
-            android:layout_marginTop="10dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/color_stroke_gray" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvHistoryList"
@@ -211,11 +213,12 @@
         android:id="@+id/button"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:text="刷新"
-        android:textSize="16sp"
-        android:textColor="@color/color_text_white"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/shape_btn_radius_2"/>
+        android:background="@drawable/shape_btn_radius_2"
+        android:text="刷新"
+        android:textColor="@color/color_text_white"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
 </LinearLayout>

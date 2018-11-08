@@ -341,11 +341,17 @@ public class DeviceDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onStop() {
+        super.onStop();
 
         if (dataBeanList.size()!=0){
             PaperManager.getPaperManager().setHistoryList(dataBeanList);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+
         if(mConnectionManager != null) {
             mConnectionManager.disconnect();
         }
