@@ -1,29 +1,21 @@
 package com.sanmen.bluesky.assistant.ui.activities;
 
-import android.Manifest;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +24,6 @@ import com.inuker.bluetooth.library.utils.BluetoothUtils;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
 import com.sanmen.bluesky.assistant.entity.LocationDataBean;
-import com.sanmen.bluesky.assistant.manager.ClientManager;
 import com.sanmen.bluesky.assistant.manager.PaperManager;
 import com.sanmen.bluesky.assistant.ui.adapter.HistoryAdapter;
 
@@ -40,8 +31,6 @@ import com.sanmen.bluesky.assistant.service.BluetoothLeService;
 
 import java.util.List;
 import java.util.UUID;
-
-import static com.sanmen.bluesky.assistant.service.BluetoothLeService.ACTION_GATT_CONNECTED;
 
 /**
  * @author lxt_bluesky
@@ -69,14 +58,14 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
     private BluetoothLeService mBluetoothLeService;
 
 
-    private final static UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private final static UUID MY_UUID = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
     private BluetoothGattCharacteristic readCharacteristic;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main_device);
         initTitleBar();
         obtainParams();
         initLayout();
@@ -170,13 +159,17 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
 //                clearUI();
 
             }else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)){
-                //发现有可支持的服务和characteristic,读数据服务.mBluetoothLeService为自定义的蓝牙连接服务
-//                BluetoothGattService readGattService =mBluetoothLeService.getSupportedGattService(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
-                BluetoothGattService readGattService =mBluetoothLeService.getSupportedGattService(MY_UUID);
-                readCharacteristic = readGattService.getCharacteristic(UUID.fromString("0000ffe4-0000-1000-8000-00805f9b34fb"));
 
-//                  接收指令
-                mBluetoothLeService.readCharacteristic(readCharacteristic);
+                Toast.makeText(DeviceActivity.this,"发现服务",Toast.LENGTH_LONG).show();
+                //发现有可支持的服务和characteristic,读数据服务.
+                readCharacteristic = findCharacteristic();
+                if (readCharacteristic!=null){
+                    mBluetoothLeService.readCharacteristic(readCharacteristic);
+                }
+//                BluetoothGattService readGattService =mBluetoothLeService.getSupportedGattService(UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb"));
+//                BluetoothGattService readGattService =mBluetoothLeService.getSupportedGattService(MY_UUID);
+//                readCharacteristic = readGattService.getCharacteristic(UUID.fromString("0000ffe4-0000-1000-8000-00805f9b34fb"));
+
             }else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)){
                 //将读到的数据进行显示
 //                String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
@@ -185,6 +178,24 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
             }
         }
     };
+
+    /**
+     * 发现可用特征值,用于后续数据通信
+     * @return
+     */
+    private BluetoothGattCharacteristic findCharacteristic() {
+        List<BluetoothGattService> gattServiceList= mBluetoothLeService.getSupportedGattServices();
+        for (BluetoothGattService gattService:gattServiceList){
+            List<BluetoothGattCharacteristic> characteristicList = gattService.getCharacteristics();
+            for (BluetoothGattCharacteristic characteristic:characteristicList){
+                if (MY_UUID.toString().equalsIgnoreCase(characteristic.getUuid().toString())){
+                    return characteristic;
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * 更新界面UI

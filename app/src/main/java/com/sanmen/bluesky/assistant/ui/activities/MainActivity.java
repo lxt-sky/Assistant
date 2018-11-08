@@ -11,12 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.ContentObserver;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -37,18 +34,14 @@ import com.inuker.bluetooth.library.connect.response.BleReadResponse;
 import com.inuker.bluetooth.library.model.BleGattCharacter;
 import com.inuker.bluetooth.library.model.BleGattProfile;
 import com.inuker.bluetooth.library.model.BleGattService;
-import com.inuker.bluetooth.library.utils.BluetoothLog;
 import com.inuker.bluetooth.library.utils.BluetoothUtils;
 import com.inuker.bluetooth.library.utils.ByteUtils;
-import com.inuker.bluetooth.library.utils.UUIDUtils;
 import com.sanmen.bluesky.assistant.R;
 import com.sanmen.bluesky.assistant.base.BaseActivity;
-import com.sanmen.bluesky.assistant.entity.BluetoothDeviceBean;
 import com.sanmen.bluesky.assistant.entity.DetailItem;
 import com.sanmen.bluesky.assistant.entity.LocationDataBean;
 import com.sanmen.bluesky.assistant.manager.ClientManager;
 import com.sanmen.bluesky.assistant.manager.PaperManager;
-import com.sanmen.bluesky.assistant.ui.adapter.BluetoothDeviceAdapter;
 import com.sanmen.bluesky.assistant.ui.adapter.HistoryAdapter;
 import com.sanmen.bluesky.assistant.utils.PermissionUtil;
 import com.sanmen.bluesky.assistant.utils.SwitchUtil;
@@ -57,11 +50,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
-
-import io.paperdb.Paper;
 
 import static com.inuker.bluetooth.library.Constants.REQUEST_SUCCESS;
 import static com.inuker.bluetooth.library.Constants.STATUS_CONNECTED;
@@ -109,7 +99,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main_device);
         initTitleBar();
         obtainParams();
         initLayout();

@@ -23,7 +23,7 @@ public class ConnectEmptyActivity extends BaseActivity implements View.OnClickLi
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_empty);
         initTitleBar();
 
         initLayout();
@@ -45,7 +45,8 @@ public class ConnectEmptyActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
 
-        SwitchUtil.switchToBluetoothConnectActivity(this);
+//        SwitchUtil.switchToBluetoothConnectActivity(this);
+        SwitchUtil.switchToDeviceListActivity(this);
         finish();
     }
 }

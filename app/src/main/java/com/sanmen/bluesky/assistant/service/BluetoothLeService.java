@@ -73,13 +73,13 @@ public class BluetoothLeService extends Service {
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
                 //蓝牙设备已连接,连接成功后启动服务发现
-                Log.e(".DeviceActivity", "启动服务发现:" + mBluetoothGatt.discoverServices());
+                Log.e(".BluetoothLeService", "启动服务发现:" + mBluetoothGatt.discoverServices());
 
             }else if (newState==BluetoothProfile.STATE_DISCONNECTED){
                 intentAction = ACTION_GATT_DISCONNECTED;
                 mConnectionState = STATE_DISCONNECTED;
 
-                Log.e(".DeviceActivity", "连接失败");
+                Log.e(".BluetoothLeService", "连接失败");
                 broadcastUpdate(intentAction);
             }
         }
@@ -88,12 +88,12 @@ public class BluetoothLeService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             super.onServicesDiscovered(gatt, status);
             if (status==BluetoothGatt.GATT_SUCCESS){
-                Log.e(".DeviceActivity", "成功发现服务");
+                Log.e(".BluetoothLeService", "成功发现服务");
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                 //                BluetoothGattService service = gatt.getService(UUID.fromString(MY_UUID));
                 //                List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
             }else{
-                Log.e(".DeviceActivity", "服务发现失败，错误码为:" + status);
+                Log.e(".BluetoothLeService", "服务发现失败，错误码为:" + status);
             }
         }
 
@@ -101,7 +101,7 @@ public class BluetoothLeService extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicRead(gatt, characteristic, status);
             if (status==BluetoothGatt.GATT_SUCCESS){
-                Log.e(".DeviceActivity", "读取成功:" + characteristic.getValue());
+                Log.e(".BluetoothLeService", "读取成功:" + characteristic.getValue());
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
         }
