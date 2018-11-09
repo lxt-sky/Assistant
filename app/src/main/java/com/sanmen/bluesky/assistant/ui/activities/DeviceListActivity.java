@@ -128,6 +128,7 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
         deviceList.clear();
         addressList.clear();
         bluetoothAdapter.cancelDiscovery();
+        bluetoothAdapter.disable();
         deviceAdapter.setNewData(new ArrayList<BluetoothDeviceBean>());
         deviceAdapter.notifyDataSetChanged();
     }

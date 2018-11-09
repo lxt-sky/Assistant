@@ -15,4 +15,5 @@
     <color name="indicator_gray">#ececec</color>
 
     <color name="color_background_gray">#EEEEEE</color>
+    <color name="color_text_gray">#777777</color>
 </resources>

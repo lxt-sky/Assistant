@@ -2,4 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/btn_yellow"/>
     <corners android:radius="25dp"/>
+    <gradient android:angle="0"
+        android:startColor="#f8ab40"
+        android:endColor="#fb6f00"/>
+
 </shape>

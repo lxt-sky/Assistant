@@ -53,7 +53,7 @@ public class PermissionApplyFragment extends Fragment implements View.OnClickLis
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         if (rootView==null){
-            rootView = inflater.inflate(R.layout.fragment_guide_item1,container,false);
+            rootView = inflater.inflate(R.layout.fragment_guide_item1,null,false);
         }
         return rootView;
     }

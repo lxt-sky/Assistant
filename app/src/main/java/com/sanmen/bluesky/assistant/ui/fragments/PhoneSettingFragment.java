@@ -43,7 +43,7 @@ public class PhoneSettingFragment extends Fragment implements View.OnTouchListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         if (rootView==null){
-            rootView=inflater.inflate(R.layout.fragment_guide_item3,container,false);
+            rootView=inflater.inflate(R.layout.fragment_guide_item3,null,false);
         }
         return rootView;
     }

@@ -22,30 +22,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvPhoneTitle"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/shape_input_radius"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_complete_info"
         android:digits="0123456789."
         android:hint="请输入电话号码"
         android:inputType="phone"
         android:padding="10dp"
-        android:textColor="@color/color_text_black" />
+        android:textColor="@color/color_text_black"
+        android:elevation="2dp"/>
 
     <RadioGroup
         android:id="@+id/groupAlarmType"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvTypeLabel"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="4dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/shape_input_radius"
-        android:padding="10dp">
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/shape_complete_info"
+        android:padding="10dp"
+        android:elevation="2dp">
 
         <RadioButton
             android:id="@+id/rbItem1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/color_text_gray"
             android:text="电话" />
 
         <RadioButton
@@ -53,13 +62,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/color_text_gray"
             android:text="短信" />
 
         <RadioButton
             android:id="@+id/rbItem3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/color_text_gray"
             android:text="电话+短信" />
     </RadioGroup>
 
@@ -67,8 +78,8 @@
         android:id="@+id/tvTypeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="146dp"
+        android:layout_below="@id/etPhoneValue"
+        android:layout_marginTop="10dp"
         android:text="报警方式"
         android:textColor="@color/color_text_black" />
 </RelativeLayout>
