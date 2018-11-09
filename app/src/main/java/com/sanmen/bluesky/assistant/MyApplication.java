@@ -28,9 +28,11 @@ public class MyApplication extends Application {
         super.onCreate();
         instance=this;
         BluetoothContext.set(this);
-        PaperManager.getPaperManager().init(this);
-
-        checkMyPermission();
+        PaperManager manager=PaperManager.getPaperManager();
+        manager.init(this);
+        if (!manager.isNeedGuide()){
+            checkMyPermission();
+        }
     }
 
     private void checkMyPermission() {

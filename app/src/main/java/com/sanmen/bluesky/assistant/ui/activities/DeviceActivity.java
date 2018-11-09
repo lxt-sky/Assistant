@@ -62,8 +62,8 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
     private BluetoothGattCharacteristic readCharacteristic;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_device);
         initTitleBar();

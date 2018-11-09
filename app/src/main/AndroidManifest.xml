@@ -18,13 +18,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".MyApplication"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activities.MainActivity"
-            android:persistableMode="persistAcrossReboots">
+        <activity android:name=".ui.activities.MainActivity">
 
         </activity>
         <activity android:name=".ui.activities.GuideActivity">
@@ -34,28 +32,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.SettingActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.SettingActivity" />
 
-        <activity android:name=".ui.activities.BluetoothApplyActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.BluetoothApplyActivity" />
 
-        <activity android:name=".ui.activities.ConnectEmptyActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.ConnectEmptyActivity" />
 
-        <activity android:name=".ui.activities.BluetoothConnectActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.BluetoothConnectActivity" />
 
-        <activity android:name=".ui.activities.DeviceActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.DeviceActivity" />
 
         <service android:name=".service.BluetoothLeService"/>
 
-        <activity android:name=".ui.activities.DeviceListActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.DeviceListActivity" />
         
-        <activity android:name=".ui.activities.DeviceDetailActivity"
-            android:persistableMode="persistAcrossReboots"/>
+        <activity android:name=".ui.activities.DeviceDetailActivity" />
     </application>
 
 </manifest>

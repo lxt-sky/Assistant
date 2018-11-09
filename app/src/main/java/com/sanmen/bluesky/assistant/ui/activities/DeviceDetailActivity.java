@@ -104,7 +104,7 @@ public class DeviceDetailActivity extends BaseActivity implements View.OnClickLi
                         text="连接成功";
                         tvReConnect.setVisibility(View.GONE);
                     }
-                    Toast.makeText(DeviceDetailActivity.this,"状态是:"+text,Toast.LENGTH_LONG).show();
+//                    Toast.makeText(DeviceDetailActivity.this,"状态是:"+text,Toast.LENGTH_LONG).show();
                     tvDeviceState.setText(text+"");
                     break;
                 default:
@@ -115,8 +115,8 @@ public class DeviceDetailActivity extends BaseActivity implements View.OnClickLi
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_device);
         initTitleBar();
@@ -294,7 +294,6 @@ public class DeviceDetailActivity extends BaseActivity implements View.OnClickLi
         bean.setAlarmTime(timeStr);
         //添加数据
         dataBeanList.add(bean);
-        //        historyAdapter.addData(bean);
         historyAdapter.notifyDataSetChanged();
 
     }

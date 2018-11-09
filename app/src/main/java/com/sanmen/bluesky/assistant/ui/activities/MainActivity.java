@@ -96,8 +96,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private long starTime = 0;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_device);
         initTitleBar();

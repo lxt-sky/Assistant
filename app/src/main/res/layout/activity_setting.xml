@@ -223,9 +223,9 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="XX助手 V1.0"
         android:gravity="bottom|center"
-        android:paddingBottom="30dp" />
+        android:paddingBottom="30dp"
+        android:text="蓝牙助手 V1.0" />
 
 
 </LinearLayout>

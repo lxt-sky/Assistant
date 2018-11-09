@@ -20,8 +20,8 @@ public class ConnectEmptyActivity extends BaseActivity implements View.OnClickLi
     Button btnPair;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_empty);
         initTitleBar();
