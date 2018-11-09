@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -55,6 +56,8 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
     private boolean isBluetoothOpen=false;
 
     private static final int REQUEST_CODE=2;
+
+    private long exitTime=0;
 
 
     @Override
@@ -210,6 +213,26 @@ public class DeviceListActivity extends BaseActivity implements BaseQuickAdapter
 
         }
     };
+
+    @Override
+    public void onRightClick(View view) {
+        super.onRightClick(view);
+        SwitchUtil.switchToSettingActivity(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK){
+            if ((System.currentTimeMillis()-exitTime)>2000){
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime=System.currentTimeMillis();
+            }else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
     protected void onDestroy() {

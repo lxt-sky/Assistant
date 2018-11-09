@@ -14,6 +14,7 @@
         app:titleText="蓝牙连接"
         android:id="@+id/titleBar"
         app:showNavBack="false"
+        app:showNavRight="true"
         app:titleTextColor="@android:color/white">
 
     </com.sanmen.bluesky.assistant.widgets.TitleBar>
